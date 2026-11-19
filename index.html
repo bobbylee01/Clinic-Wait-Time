@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clinic Wait-Time Simulator</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header>
+    <p>Interactive health data exhibit</p>
+    <h1>Clinic Wait-Time Simulator</h1>
+    <p>How much does adding a staff member change the predicted wait?</p>
+  </header>
+  <main>
+    <section aria-labelledby="simulator">
+      <h2 id="simulator">Try a clinic scenario</h2>
+      <form id="scenario">
+        <fieldset disabled id="controls">
+          <legend>Clinic conditions</legend>
+          <label for="day_of_week">Weekday <select id="day_of_week"></select></label>
+          <label for="hour">Hour <output id="hour-value" for="hour"></output>
+            <input id="hour" type="range"></label>
+          <label for="staff_on_shift">Staff on shift <output id="staff_on_shift-value" for="staff_on_shift"></output>
+            <input id="staff_on_shift" type="range"></label>
+          <label for="patients_in_queue">Patients in queue <output id="patients_in_queue-value" for="patients_in_queue"></output>
+            <input id="patients_in_queue" type="range"></label>
+        </fieldset>
+      </form>
+      <div class="result" aria-live="polite">
+        <span>Predicted wait</span>
+        <strong id="prediction">Loading model...</strong>
+        <p id="comparison"></p>
+      </div>
+    </section>
+    <section aria-labelledby="results">
+      <h2 id="results">How accurate was the network?</h2>
+      <p id="method"></p>
+      <dl>
+        <div><dt>Neural network MAE</dt><dd id="network-mae">Pending</dd></div>
+        <div><dt>Median baseline MAE</dt><dd id="baseline-mae">Pending</dd></div>
+      </dl>
+      <p>Mean absolute error (MAE) is the average size of a prediction error in minutes. Lower is better.</p>
+      <h3>Largest error on the test set</h3>
+      <p id="mistake"></p>
+      <button id="try-mistake" type="button" disabled>Try this scenario</button>
+    </section>
+    <section aria-labelledby="chat">
+      <h2 id="chat">Ask about the model</h2>
+      <p>The chatbot runs in your browser. Enabling it downloads a language model and requires WebGPU.</p>
+      <button id="enable-chat" type="button" disabled>Enable chat</button>
+      <p id="chat-status" role="status"></p>
+      <div id="messages" role="log" aria-label="Chat messages"></div>
+      <form id="chat-form" hidden>
+        <label for="question">Your question</label>
+        <input id="question" required maxlength="500" placeholder="How did the model compare with the baseline?">
+        <button id="send" type="submit">Send</button>
+      </form>
+    </section>
+    <section aria-labelledby="source">
+      <h2 id="source">Data and limitations</h2>
+      <p>This exhibit uses simulated visits generated for the <a href="https://snsie.github.io/neural-networks/exercise.html">Neural Network Explorer exercise</a>. The network takes the hour, weekday, staff count, and queue size and predicts a wait in minutes.</p>
+      <p>Evaluation covers only a held-out sample of this synthetic dataset. The estimates are for classroom exploration. The data lacks visit complexity and service duration, which could affect waits in real clinics.</p>
+      <a href="./data/clinic-wait-times.csv" download>Download the dataset</a>
+    </section>
+  </main>
+</body>
+</html>
